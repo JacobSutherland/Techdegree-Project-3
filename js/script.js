@@ -18,31 +18,37 @@ jobsField.addEventListener( 'change', e => {
     }
 })
 
-//Defaults "Shirt Color" options to none and sets Color option to "Select Theme"
-    for(let i = 0; i < shirtColorField.children.length; i++){
-        shirtColorField.children[i].style.display = 'none'
-    }
-
-//Toggles colors option on and off bases on theme  selection
+//Checks the value of the of the design options and displays appropriate Color options or defaults to "Please select a T-shirt theme"
 function themeChecker(){
-    if(shirtThemeField.value === 'Select Theme'){
-        shirtColorField.children[0].textContent = 'Please select a T-shirt theme';
-    } else {
-        shirtColorField.children.textContent = one;
+    shirtColorField[0].textContent = 'Please select a T-shirt theme'
+    for(let i = 0; i < shirtColorField.length; i++){
+        shirtColorField[i].style.display = 'none';
     }
-       shirtThemeField.addEventListener('change', e => {
-           if(e.target.value === 'Select Theme'){
-               shirtColorField.children.textContent = 'Select Theme';
-               for(let i = 0; i < shirtColorField.children.length; i++){
-               shirtColorField.children[i].style.display = 'none'
+    shirtThemeField.addEventListener('change', e =>{
+        if(e.target.value === "Select Theme"){
+            shirtColorField[0].textContent = 'Please select a T-shirt theme';
+            for(let i = 0; i < shirtColorField.length; i++){
+                shirtColorField[i].style.display = 'none';
             }
-           } else if(e.target.value === 'I &#9829; JS'||'JS Puns'){
-                for(let i = 0; i < shirtColorField.children.length; i++){
-                shirtColorField.children[i].style.display = 'block'
-           }
+        } else if(e.target.value === 'js puns'){
+            shirtColorField[0].textContent = 'Cornflower Blue (JS Puns shirt onlys)';
+            for(let i = 0; i < shirtColorField.length; i++){
+                if(i >= 3){
+                shirtColorField[i].style.display = 'none';
+                } else {
+                    shirtColorField[i].style.display = 'block';
+                }
+            } 
+        } else if(e.target.value === 'heart js'){
+            for(let i = 0; i < shirtColorField.length; i++){
+                if(i < 3){
+                shirtColorField[i].style.display = 'none';
+                } else {
+                    shirtColorField[i].style.display = 'block';
+                }
+            }
         }
-       })
-    }
-//Calls theme checking function
-themeChecker();
-
+    })
+}
+    
+themeChecker(); 
