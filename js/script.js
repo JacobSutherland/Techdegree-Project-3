@@ -3,13 +3,15 @@ const otherJobInput = document.querySelector('#other-title');
 const jobsField = document.querySelector('#title');
 const shirtThemeField = document.querySelector('#design');
 const shirtColorField = document.querySelector('#color');
+const colorOptions = document.querySelectorAll('#color option');
+const themeOptions = document.querySelectorAll('#design option');
 
 
 //Auto focuses the first texr field on page load
 nameTextField.focus();
 otherJobInput.style.display = 'none';
 
-//Hides and displays the input field for the "Other" jobs option 
+//Hides and shows the input field for the "Other" jobs option by checking the target's value for 'other' and toggling display 
 jobsField.addEventListener( 'change', e => {
     if (e.target.value ==='other'){
         otherJobInput.style.display = 'block';
@@ -18,37 +20,50 @@ jobsField.addEventListener( 'change', e => {
     }
 })
 
-//Checks the value of the of the design options and displays appropriate Color options or defaults to "Please select a T-shirt theme"
+//Checks the value of the of the design and color options to displays appropriate Color options or defaults to "Please select a T-shirt theme"
 function themeChecker(){
-    shirtColorField[0].textContent = 'Please select a T-shirt theme'
-    for(let i = 0; i < shirtColorField.length; i++){
-        shirtColorField[i].style.display = 'none';
+    //Created a default value for when a theme isn't selected
+    const colorDefault = document.createElement('option');
+    colorDefault.textContent = 'Please select a T-shirt theme'
+    shirtColorField.add(colorDefault, 1);
+    //Deafaults the new option in color field and make it the initial selection
+    shirtColorField[0].text = colorDefault.text;
+    colorDefault.selected = true;
+    //Deafaults all color options to 'display none' because a theme isn't selected
+    for(let i = 0; i < colorOptions.length; i++){
+        colorOptions[i].style.display = 'none';
     }
+    //if the theme's event is triggered it adds/removes the default theme option, and also  toggles the display of colors in a theme collection based on user selection
     shirtThemeField.addEventListener('change', e =>{
+        shirtColorField.add(colorDefault, 0);
         if(e.target.value === "Select Theme"){
-            shirtColorField[0].textContent = 'Please select a T-shirt theme';
-            for(let i = 0; i < shirtColorField.length; i++){
-                shirtColorField[i].style.display = 'none';
+            colorOptions[0].text = colorDefault.text;
+            for(let i = 0; i < colorOptions.length; i++){
+                colorOptions[i].style.display = 'none';
             }
-        } else if(e.target.value === 'js puns'){
-            shirtColorField[0].textContent = 'Cornflower Blue (JS Puns shirt onlys)';
-            for(let i = 0; i < shirtColorField.length; i++){
+        } else if(e.target.value === "js puns"){
+            shirtColorField.remove(colorDefault);
+            colorOptions[0].text = 'Cornflower Blue (JS Puns shirt only)';
+            for(let i = 0; i < colorOptions.length; i++){
                 if(i >= 3){
-                shirtColorField[i].style.display = 'none';
+                colorOptions[i].style.display = 'none';
                 } else {
-                    shirtColorField[i].style.display = 'block';
+                    colorOptions[i].style.display = 'block';
                 }
             } 
-        } else if(e.target.value === 'heart js'){
-            for(let i = 0; i < shirtColorField.length; i++){
+        } else if(e.target.value === "heart js"){
+            shirtColorField.remove(colorDefault);
+            colorOptions[0].text = colorOptions[3].text;
+            for(let i = 0; i < colorOptions.length; i++){
                 if(i < 3){
-                shirtColorField[i].style.display = 'none';
+                colorOptions[i].style.display = 'none';
                 } else {
-                    shirtColorField[i].style.display = 'block';
+                colorOptions[i].style.display = 'block';
                 }
             }
         }
     })
 }
-    
+
 themeChecker(); 
+
