@@ -5,8 +5,10 @@ const shirtThemeField = document.querySelector('#design');
 const shirtColorField = document.querySelector('#color');
 const colorOptions = document.querySelectorAll('#color option');
 const themeOptions = document.querySelectorAll('#design option');
+const activitiesField = document.querySelector('.activities');
+const activitiesCheckboxes = document.querySelectorAll('.activities input');
 
-
+/* --------------------------  NAME FIELD ------------------------*/
 //Auto focuses the first texr field on page load
 nameTextField.focus();
 otherJobInput.style.display = 'none';
@@ -67,3 +69,59 @@ function themeChecker(){
 
 themeChecker(); 
 
+function scheduleChecker(){
+    let totalEventCosts = 0;
+    for(let i = 0; i < activitiesCheckboxes.length; i++){
+        activitiesCheckboxes[i].addEventListener('change', e => {
+                if(e.target.checked && e.target.name === "js-frameworks"){
+                    totalEventCosts += parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[3].disabled = true;
+                    console.log(totalEventCosts)
+                } else if(e.target.checked === false && e.target.name === "js-frameworks"){
+                    activitiesCheckboxes[3].disabled = false;
+                    totalEventCosts -= parseInt(e.target.dataset.cost);
+                    console.log(totalEventCosts)
+                 } 
+                 if(e.target.checked && e.target.name === "express"){
+                    console.log(totalEventCosts)
+                    totalEventCosts += parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[1].disabled = true;
+                } else if(e.target.checked === false && e.target.name === "express"){
+                    console.log(totalEventCosts)
+                    totalEventCosts -= parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[1].disabled = false;
+                 } 
+                 if(e.target.checked && e.target.name === "js-libs"){
+                    console.log(totalEventCosts)
+                    totalEventCosts += parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[4].disabled = true;
+                } else if(e.target.checked === false && e.target.name === "js-libs"){
+                    console.log(totalEventCosts)
+                    totalEventCosts -= parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[4].disabled = false;
+                 } 
+                 if(e.target.checked && e.target.name === "node"){
+                    console.log(totalEventCosts)
+                    totalEventCosts += parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[2].disabled = true;
+                } else if(e.target.checked === false && e.target.name === "node"){
+                    console.log(totalEventCosts)
+                    totalEventCosts -= parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[2].disabled = false;
+                 } 
+                 if(e.target.checked && e.target.name === "all"){
+                    totalEventCosts += parseInt(e.target.dataset.cost);
+                    console.log(totalEventCosts)
+                } else if(e.target.checked === false && e.target.name === "all"){
+                    console.log(totalEventCosts)
+                    totalEventCosts -= parseInt(e.target.dataset.cost);
+                 } 
+            }) 
+        }
+    const cart = document.createElement('div');
+    const finalTotal = document.createElement('p');
+    finalTotal.textContent = totalEventCosts;
+    cart.appendChild(finalTotal);
+    activitiesField.appendChild(cart);
+    }
+scheduleChecker() 
