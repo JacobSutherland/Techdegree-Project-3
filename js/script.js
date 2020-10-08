@@ -68,53 +68,62 @@ function themeChecker(){
         }
     })
 }
-
 themeChecker(); 
-
 /* --------------------------  ACTIVITIES FIELD ------------------------*/
-
+//Checks the values of the events names, whether a box is checked, and the cost of the event to prevent conflicts and maintain the running cost
 function scheduleChecker(){
     let totalEventCosts = 0;
+    //creates elements to sppend final cost of events attended
     function buildCart(){
         const cart = document.createElement('div');
         const finalTotal = document.createElement('p');
         finalTotal.textContent = `Total: $${totalEventCosts}`
         cart.appendChild(finalTotal);
         activitiesField.appendChild(cart);
+        //function is called on every checkbox event so we need to prevent more than one total from being displayed
         if(activitiesField.children.length > 9){
             let previousTotal = cart.previousElementSibling;
             activitiesField.removeChild(previousTotal);
         }
     }
     for(let i = 0; i < activitiesCheckboxes.length; i++){
-        activitiesCheckboxes[i].addEventListener('change', e => {
+        //for each checkbox evaluate if checked, name value, add/subtract cost, and style conflicting events
+                activitiesCheckboxes[i].addEventListener('change', e => {
                 if(e.target.checked && e.target.name === "js-frameworks"){
                     totalEventCosts += parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[3].disabled = true;
+                    activitiesCheckboxes[3].parentElement.style.textDecoration = "line-through";
                 } else if(e.target.checked === false && e.target.name === "js-frameworks"){
-                    activitiesCheckboxes[3].disabled = false;
                     totalEventCosts -= parseInt(e.target.dataset.cost);
+                    activitiesCheckboxes[3].disabled = false;
+                    activitiesCheckboxes[3].parentElement.style.textDecoration = "none";
                  } 
                  if(e.target.checked && e.target.name === "express"){
                     totalEventCosts += parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[1].disabled = true;
+                    activitiesCheckboxes[1].parentElement.style.textDecoration = "line-through";
                 } else if(e.target.checked === false && e.target.name === "express"){
                     totalEventCosts -= parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[1].disabled = false;
+                    activitiesCheckboxes[1].parentElement.style.textDecoration = "none";
                  } 
                  if(e.target.checked && e.target.name === "js-libs"){
                     totalEventCosts += parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[4].disabled = true;
+                    activitiesCheckboxes[4].parentElement.style.textDecoration = "line-through";
                 } else if(e.target.checked === false && e.target.name === "js-libs"){
                     totalEventCosts -= parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[4].disabled = false;
+                    activitiesCheckboxes[4].parentElement.style.textDecoration = "none";
                  } 
                  if(e.target.checked && e.target.name === "node"){
                     totalEventCosts += parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[2].disabled = true;
+                    activitiesCheckboxes[2].parentElement.style.textDecoration = "line-through";
                 } else if(e.target.checked === false && e.target.name === "node"){
                     totalEventCosts -= parseInt(e.target.dataset.cost);
                     activitiesCheckboxes[2].disabled = false;
+                    activitiesCheckboxes[2].parentElement.style.textDecoration = "none";
                  } 
                  if(e.target.checked && e.target.name === "all"){
                     totalEventCosts += parseInt(e.target.dataset.cost);
