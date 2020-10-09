@@ -153,11 +153,23 @@ function scheduleChecker(){
 scheduleChecker() 
 
 /* --------------------------  PAYMENT FIELD ------------------------*/
+//Function hides and displays payment options based on user selection
 function paymentChecker(){
+    //initializes form by setting credit card as default and hide other options
     payPal.style.display = 'none';
     bitcoin.style.display = 'none';
-    paymentField.addEventListener('change', e => {
+    //toggleCounter keeps track of clicks on the form to act as a switch
+    let toggleCounter = 0;
+    paymentField.addEventListener('click', () => {
+        //Removes the "Select Payment Method" once the field is active to avoid it being submited
         paymentOptions[0].style.display = 'none'
+        toggleCounter += 1;
+        //Makes the default selected option credit card once the form is active so if it is submited, credit card is selected
+        if(toggleCounter <= 1)
+        paymentOptions[1].selected = true;
+    })
+    //Listens for the option values changing in order to hide and display appropriate payment
+    paymentField.addEventListener('change', e => {
         if(e.target.value === 'credit card'){
             creditCardField.style.display = 'block';
             bitcoin.style.display = 'none';
@@ -175,3 +187,5 @@ function paymentChecker(){
 }
 
 paymentChecker();
+
+/* --------------------------  VALIDATION ------------------------*/
