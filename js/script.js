@@ -7,7 +7,12 @@ const colorOptions = document.querySelectorAll('#color option');
 const themeOptions = document.querySelectorAll('#design option');
 const activitiesField = document.querySelector('.activities');
 const activitiesCheckboxes = document.querySelectorAll('.activities input');
-
+const paymentField = document.querySelector('#payment');
+const paymentOptions = document.querySelectorAll('#payment option');
+const creditCardField = document.querySelector('#credit-card');
+const payPal = document.querySelector('#paypal');
+const bitcoin = document.querySelector('#bitcoin');
+const submitBtn = document.querySelector('button');
 /* --------------------------  NAME FIELD ------------------------*/
 //Auto focuses the first texr field on page load
 nameTextField.focus();
@@ -69,6 +74,7 @@ function themeChecker(){
     })
 }
 themeChecker(); 
+
 /* --------------------------  ACTIVITIES FIELD ------------------------*/
 //Checks the values of the events names, whether a box is checked, and the cost of the event to prevent conflicts and maintain the running cost
 function scheduleChecker(){
@@ -146,5 +152,26 @@ function scheduleChecker(){
     }
 scheduleChecker() 
 
+/* --------------------------  PAYMENT FIELD ------------------------*/
+function paymentChecker(){
+    payPal.style.display = 'none';
+    bitcoin.style.display = 'none';
+    paymentField.addEventListener('change', e => {
+        paymentOptions[0].style.display = 'none'
+        if(e.target.value === 'credit card'){
+            creditCardField.style.display = 'block';
+            bitcoin.style.display = 'none';
+            payPal.style.display = 'none';
+        } else if(e.target.value === 'paypal'){
+            creditCardField.style.display = 'none';
+            bitcoin.style.display = 'none';
+            payPal.style.display = 'block';
+        } else if(e.target.value === 'bitcoin'){
+            creditCardField.style.display = 'none';
+            bitcoin.style.display = 'block';
+            payPal.style.display = 'none';
+        }
+    })
+}
 
-
+paymentChecker();
