@@ -41,6 +41,7 @@ function themeChecker(){
     //Created a default value for when a theme isn't selected
     const colorDefault = document.createElement('option');
     colorDefault.textContent = 'Please select a T-shirt theme'
+    shirtColorField.style.display = 'none';
     shirtColorField.add(colorDefault, 1);
     //Deafaults the new option in color field and make it the initial selection
     shirtColorField[0].text = colorDefault.text;
@@ -52,6 +53,11 @@ function themeChecker(){
     //if the theme's event is triggered it adds/removes the default theme option, and also  toggles the display of colors in a theme collection based on user selection
     shirtThemeField.addEventListener('change', e =>{
         shirtColorField.add(colorDefault, 0);
+        if(e.target.value === 'Select Theme'){
+            shirtColorField.style.display = 'none';
+        } else {
+            shirtColorField.style.display = 'block';
+        }
         if(e.target.value === "Select Theme"){
             colorOptions[0].text = colorDefault.text;
             for(let i = 0; i < colorOptions.length; i++){
@@ -168,18 +174,8 @@ function paymentChecker(){
     //initializes form by setting credit card as default and hide other options
     payPal.style.display = 'none';
     bitcoin.style.display = 'none';
-    //Because Credit Card is default display, a user choosing Cred Card may not think to open the options, so when they submit the form without a selection, but filled out card info, their form will go through as Credit Card selection because we set the "select  payment option" value to "credit card"
-    paymentOptions[0].value = paymentOptions[1].value;
-    //toggleCounter keeps track of clicks on the form to act as a switch
-    let toggleCounter = 0;
-    paymentField.addEventListener('click', () => {
-        //Removes the "Select Payment Method" once the field is active to avoid it being submited
-        paymentOptions[0].style.display = 'none'
-        toggleCounter += 1;
-        //Makes the default selected option credit card once the form is active so if it is submited, credit card is selected
-        if(toggleCounter <= 1)
-        paymentOptions[1].selected = true;
-    })
+    paymentOptions[0].style.display = 'none';
+    paymentOptions[1].selected = true;
     //Listens for the option values changing in order to hide and display appropriate payment
     paymentField.addEventListener('change', e => {
         if(e.target.value === 'credit card'){
@@ -252,11 +248,10 @@ function eventValidator(e){
             e.preventDefault();
         }
     })
-    console.log(unchecked);
 }
 
 function paymentValidator(e){
-    const validPayment = /^[1-9]{13,16}$/;
+    const validPayment = /^[0-9]{13,16}$/;
     if(validPayment.test(creditCardNum.value) === false){
         creditCardNum.style.borderColor = 'red';
         creditCardNum.value = 'Card Number Must be 13 - 16 Digits';
@@ -302,7 +297,7 @@ creditCardNum.addEventListener('click', () => {
     }
 })
 creditCardNum.addEventListener('input', () => {
-    const validPayment = /^[1-9]{13,16}$/;
+    const validPayment = /^[0-9]{13,16}$/;
     if(validPayment.test(creditCardNum.value) === false){
     creditCardNum.style.borderColor = 'red';     
 }   else if(validPayment.test(creditCardNum.value) === true){

@@ -1,0 +1,1 @@
+Interactive registration form for a fictional conference called "FullStack Conf." that validates user input by utilizing vanilla JavaScript on a form.
