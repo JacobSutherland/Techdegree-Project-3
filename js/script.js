@@ -1,4 +1,6 @@
 const nameTextField = document.getElementsByTagName('label')[0];
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#mail');
 const otherJobInput = document.querySelector('#other-title');
 const jobsField = document.querySelector('#title');
 const shirtThemeField = document.querySelector('#design');
@@ -13,6 +15,11 @@ const creditCardField = document.querySelector('#credit-card');
 const payPal = document.querySelector('#paypal');
 const bitcoin = document.querySelector('#bitcoin');
 const submitBtn = document.querySelector('button');
+const form = document.querySelector('form');
+const creditCardNum = document.querySelector('#cc-num');
+const cardLabel = document.querySelector('.col-6 label');
+const zipCode = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
 /* --------------------------  NAME FIELD ------------------------*/
 //Auto focuses the first texr field on page load
 nameTextField.focus();
@@ -86,10 +93,13 @@ function scheduleChecker(){
         finalTotal.textContent = `Total: $${totalEventCosts}`
         cart.appendChild(finalTotal);
         activitiesField.appendChild(cart);
-        //function is called on every checkbox event so we need to prevent more than one total from being displayed
+        //function is called on every checkbox event so we need to prevent more than one total from being displayed, this will also remove the validation error message as it will aslo be appnded as a previous element  toi the cart f no option is selected
         if(activitiesField.children.length > 9){
             let previousTotal = cart.previousElementSibling;
             activitiesField.removeChild(previousTotal);
+        }
+        if(totalEventCosts === 0){
+            activitiesField.removeChild(cart);
         }
     }
     for(let i = 0; i < activitiesCheckboxes.length; i++){
@@ -158,6 +168,8 @@ function paymentChecker(){
     //initializes form by setting credit card as default and hide other options
     payPal.style.display = 'none';
     bitcoin.style.display = 'none';
+    //Because Credit Card is default display, a user choosing Cred Card may not think to open the options, so when they submit the form without a selection, but filled out card info, their form will go through as Credit Card selection because we set the "select  payment option" value to "credit card"
+    paymentOptions[0].value = paymentOptions[1].value;
     //toggleCounter keeps track of clicks on the form to act as a switch
     let toggleCounter = 0;
     paymentField.addEventListener('click', () => {
@@ -189,3 +201,138 @@ function paymentChecker(){
 paymentChecker();
 
 /* --------------------------  VALIDATION ------------------------*/
+function nameValidator(e){
+    const validName = /[a-zA-Z]+/
+    if(nameInput.value === '' || nameInput.value === 'Name Required'){
+        nameInput.style.borderColor = 'red';
+        nameInput.value = 'Name Required';
+        e.preventDefault();
+    } else if(validName.test(nameInput.value) === false && nameInput.value.length >= 1){
+        nameInput.style.borderColor = 'red';
+        nameInput.value = 'Please Use Alphabetical Characters';
+        e.preventDefault();
+    }
+    nameInput.addEventListener('click', () => {
+    nameInput.style.borderColor = 'rgb(112, 157, 220)';
+    nameInput.value = '';
+    })
+}
+
+function emailValidator(e){
+    const validEmail = /^\w+@[a-zA-Z]+\.(com|org|net|edu)$/;
+    if(emailInput.value === '' || emailInput.value === 'Email Required'){
+        emailInput.style.borderColor = 'red';
+        emailInput.value = 'Email Address Required';
+        e.preventDefault();
+    } else if(validEmail.test(emailInput.value) === false && emailInput.value.length >= 1){
+        emailInput.style.borderColor = 'red';
+        emailInput.value = 'Please Use a Valid Email Address (email@email.com)';
+        e.preventDefault();
+    }
+    emailInput.addEventListener('click', () => {
+    emailInput.style.borderColor = 'rgb(112, 157, 220)';
+    emailInput.value = '';
+    })
+}
+
+function eventValidator(e){
+    const eventError = document.createElement('p');
+    let unchecked = 0;
+    activitiesCheckboxes.forEach( i => {
+        if(i.checked === false){
+            unchecked++;
+        }
+        if(unchecked === activitiesCheckboxes.length){
+            eventError.textContent = 'Please Select At Least One Activity'
+            eventError.style.color = 'red';
+            activitiesField.appendChild(eventError);
+            if(activitiesField.children.length > 9){
+                activitiesField.removeChild(activitiesField.lastElementChild);
+            }
+            e.preventDefault();
+        }
+    })
+    console.log(unchecked);
+}
+
+function paymentValidator(e){
+    const validPayment = /^[1-9]{13,16}$/;
+    if(validPayment.test(creditCardNum.value) === false){
+        creditCardNum.style.borderColor = 'red';
+        creditCardNum.value = 'Card Number Must be 13 - 16 Digits';
+        e.preventDefault();
+    }
+}
+
+function zipCodeValidator(e){
+    const validZip = /^\d{5}$/
+    if(validZip.test(zipCode.value) === false){
+        zipCode.style.borderColor = 'red';
+        zipCode.value = '5 digit Zip Code'
+        e.preventDefault();
+    } else if(validZip.test(zipCode.value) === true){
+        zipCode.style.borderColor = 'rgb(112, 157, 220)';
+    }
+    zipCode.addEventListener('click', () => {
+        zipCode.value = ''
+        zipCode.style.borderColor = 'rgb(112, 157, 220)';
+    })
+}
+
+function cvvValidator(e){
+    const validCvv = /^\d{3}$/
+    if(validCvv.test(cvv.value) === false){
+        cvv.style.borderColor = 'red';
+        cvv.value = '3 Digit #'
+        e.preventDefault();
+    } else if(validCvv.test(cvv.value) === true){
+        cvv.style.borderColor = 'rgb(112, 157, 220)';
+    }
+    cvv.addEventListener('click', () => {
+        cvv.value = ''
+        cvv.style.borderColor = 'rgb(112, 157, 220)';
+    })
+}
+/* -------------------------- LIVE CARD VALIDATION------------------------*/
+creditCardNum.addEventListener('click', () => {
+    creditCardNum.style.borderColor = 'initial';
+    creditCardNum.style.borderColor = 'rgb(112, 157, 220)'
+    if(creditCardNum.value === 'Card Number Must be 13 - 16 Digits'){
+        creditCardNum.value = '';
+    }
+})
+creditCardNum.addEventListener('input', () => {
+    const validPayment = /^[1-9]{13,16}$/;
+    if(validPayment.test(creditCardNum.value) === false){
+    creditCardNum.style.borderColor = 'red';     
+}   else if(validPayment.test(creditCardNum.value) === true){
+        creditCardNum.style.borderColor = 'rgb(112, 157, 220)';
+        cardLabel.textContent = 'Card Number:';
+        cardLabel.style.color = 'initial';
+} 
+    if(creditCardNum.value.length > 1 && creditCardNum.value.length < 13){
+        cardLabel.textContent = 'Too Short (Minimum 13 Digits)';
+        cardLabel.style.color = 'red';
+    } else if(creditCardNum.value.length > 16) {
+        cardLabel.textContent = 'Too Long (Maximum 16 Digits)';
+        cardLabel.style.color = 'red';
+    } 
+    else if(creditCardNum.value.length < 1){
+        cardLabel.textContent = 'Card Number:';
+        cardLabel.style.color = 'initial';
+        creditCardNum.style.borderColor = 'rgb(112, 157, 220)';
+    }
+})
+
+function valdidator(){
+    form.addEventListener('submit', (e) => {
+    nameValidator(e);
+    emailValidator(e);
+    eventValidator(e);
+    paymentValidator(e);
+    zipCodeValidator(e);
+    cvvValidator(e);
+})
+}
+
+valdidator();
