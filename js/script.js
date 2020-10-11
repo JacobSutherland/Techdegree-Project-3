@@ -252,7 +252,7 @@ function eventValidator(e){
 
 function paymentValidator(e){
     const validPayment = /^[0-9]{13,16}$/;
-    if(validPayment.test(creditCardNum.value) === false){
+    if(validPayment.test(creditCardNum.value) === false && paymentOptions[1].selected === true){
         creditCardNum.style.borderColor = 'red';
         creditCardNum.value = 'Card Number Must be 13 - 16 Digits';
         e.preventDefault();
@@ -261,7 +261,7 @@ function paymentValidator(e){
 
 function zipCodeValidator(e){
     const validZip = /^\d{5}$/
-    if(validZip.test(zipCode.value) === false){
+    if(validZip.test(zipCode.value) === false && paymentOptions[1].selected === true){
         zipCode.style.borderColor = 'red';
         zipCode.value = '5 digit Zip Code'
         e.preventDefault();
@@ -276,7 +276,7 @@ function zipCodeValidator(e){
 
 function cvvValidator(e){
     const validCvv = /^\d{3}$/
-    if(validCvv.test(cvv.value) === false){
+    if(validCvv.test(cvv.value) === false && paymentOptions[1].selected === true){
         cvv.style.borderColor = 'red';
         cvv.value = '3 Digit #'
         e.preventDefault();
